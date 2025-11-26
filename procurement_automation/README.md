@@ -79,5 +79,6 @@ Upload JSON arrays or CSVs that match these fields. See `procurement_automation/
 - `procurement_automation/planner.py` — planning logic and heuristics.
 - `procurement_automation/data.py` — sample data and tweakable assumptions.
 - `procurement_automation/loader.py` — JSON/CSV ingestion.
+- `procurement_automation/samples/` — ready-to-upload JSON/CSV files that mirror the sample data.
 
 Tune safety stock, cover buffer, pricing, or MOQ rules in `procurement_automation/data.py` and `procurement_automation/planner.py`.

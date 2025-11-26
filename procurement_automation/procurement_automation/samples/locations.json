@@ -1,0 +1,6 @@
+[
+  { "location_id": "DC-EAST", "kind": "dc", "capacity": 5000, "safety_stock": 100 },
+  { "location_id": "STORE-NY", "kind": "store", "capacity": 800, "safety_stock": 40 },
+  { "location_id": "STORE-SF", "kind": "store", "capacity": 750, "safety_stock": 35 },
+  { "location_id": "ONLINE", "kind": "online", "capacity": 1200, "safety_stock": 60 }
+]

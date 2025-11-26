@@ -1,0 +1,9 @@
+[
+  { "sku": "SKU-RED-TEA", "location_id": "DC-EAST", "on_hand": 320, "inbound": 50 },
+  { "sku": "SKU-RED-TEA", "location_id": "STORE-NY", "on_hand": 60, "inbound": 0 },
+  { "sku": "SKU-RED-TEA", "location_id": "STORE-SF", "on_hand": 40, "inbound": 0 },
+  { "sku": "SKU-RED-TEA", "location_id": "ONLINE", "on_hand": 70, "inbound": 20 },
+  { "sku": "SKU-MASALA", "location_id": "DC-EAST", "on_hand": 220, "inbound": 0 },
+  { "sku": "SKU-RICE", "location_id": "DC-EAST", "on_hand": 900, "inbound": 150 },
+  { "sku": "SKU-PULSES", "location_id": "DC-EAST", "on_hand": 430, "inbound": 0 }
+]

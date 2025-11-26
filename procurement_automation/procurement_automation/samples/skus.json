@@ -1,0 +1,6 @@
+[
+  { "sku": "SKU-RED-TEA", "supplier_id": "SUP-RED", "case_size": 10 },
+  { "sku": "SKU-MASALA", "supplier_id": "SUP-RED", "case_size": 12 },
+  { "sku": "SKU-RICE", "supplier_id": "SUP-GROC", "case_size": 20 },
+  { "sku": "SKU-PULSES", "supplier_id": "SUP-GROC", "case_size": 24 }
+]

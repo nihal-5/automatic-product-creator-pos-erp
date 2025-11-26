@@ -1,0 +1,22 @@
+[
+  {
+    "supplier_id": "SUP-RED",
+    "name": "Red Label Supplier",
+    "lead_time_days": 5,
+    "min_order_qty": 50,
+    "price_band": {
+      "SKU-RED-TEA": 1.1,
+      "SKU-MASALA": 1.5
+    }
+  },
+  {
+    "supplier_id": "SUP-GROC",
+    "name": "Grocer Partner",
+    "lead_time_days": 7,
+    "min_order_qty": 100,
+    "price_band": {
+      "SKU-RICE": 0.9,
+      "SKU-PULSES": 1.2
+    }
+  }
+]

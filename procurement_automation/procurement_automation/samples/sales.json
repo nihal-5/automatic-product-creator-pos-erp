@@ -1,0 +1,8 @@
+[
+  { "sku": "SKU-RED-TEA", "location_id": "STORE-NY", "qty": 120, "days": 14 },
+  { "sku": "SKU-RED-TEA", "location_id": "STORE-SF", "qty": 80, "days": 14 },
+  { "sku": "SKU-RED-TEA", "location_id": "ONLINE", "qty": 150, "days": 14 },
+  { "sku": "SKU-MASALA", "location_id": "STORE-NY", "qty": 60, "days": 14 },
+  { "sku": "SKU-RICE", "location_id": "DC-EAST", "qty": 400, "days": 14 },
+  { "sku": "SKU-PULSES", "location_id": "DC-EAST", "qty": 210, "days": 14 }
+]
