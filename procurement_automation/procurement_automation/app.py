@@ -629,6 +629,12 @@ HTML_PAGE = """
       }
     });
 
+    function regeneratePO() {
+      const sel = document.getElementById('supplier-select');
+      const current = sel ? sel.value : null;
+      runPlan(current);
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       pushStatus('Running sample plan…', 'pending');
       runPlan();
@@ -776,8 +782,3 @@ async def supplier_po_pdf_custom(supplier_id: str, request: Request):
         media_type="application/pdf",
         headers={"Content-Disposition": f'attachment; filename="po_${supplier_id}_custom.pdf"'},
     )
-    function regeneratePO() {
-      const sel = document.getElementById('supplier-select');
-      const current = sel ? sel.value : null;
-      runPlan(current);
-    }
