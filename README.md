@@ -43,6 +43,33 @@ For each image you’ll see:
 
 For each product folder you’ll also get a combined JSON plus `output/catalog.json` and `output/catalog.html` for browsing results.
 
+### Example combined JSON snippet
+```json
+{
+  "summary": {
+    "product_name": "Red Label Tea",
+    "brand": "Brooke Bond",
+    "net_weight": "450 g",
+    "serving_size": "tsp (2g)",
+    "expiry": "2025-06-15"
+  },
+  "barcode": {
+    "items": [
+      { "type": "EAN13", "data": "8720608614813" }
+    ]
+  },
+  "mrp": { "amount": "299", "currency": "₹", "raw": "MRP ₹299.00 (incl. of all taxes)" },
+  "dates": {
+    "best_by": "2025-06-15",
+    "raw_candidates": ["MFD 15/06/2024", "EXP 15/06/2025", "LOT A1B2C3"]
+  },
+  "views": {
+    "front": { "hero": "output/product_front_hero.jpeg", "ocr": "output/product_front_ocr.jpeg" },
+    "back":  { "hero": "output/product_back_hero.jpeg",  "ocr": "output/product_back_ocr.jpeg" }
+  }
+}
+```
+
 ## Configuration (env vars)
 - `MAX_SIDE` (default `2000`) — resize longest side before inference  
 - `YOLO_MODEL` (default `yolov8m-world.pt`)  
@@ -70,13 +97,14 @@ For each product folder you’ll also get a combined JSON plus `output/catalog.j
 
 ## Showcase
 - Product catalog UI (catalog HTML with hero/JSON preview):  
-  `docs/product-catalog.png`  
-  _(Add your exported screenshot to this path to display it here.)_
+  ![Product catalog](docs/product-catalog.png)
 - AI email/resume automation dashboard (My-Email-MCP):  
-  `docs/resume-approval-dashboard.png`  
-  _(Add your screenshot here or in the My-Email-MCP README.)_
+  ![Resume approval dashboard](docs/resume-approval-dashboard.png)
 
 ## Notes
 - If no product‑like box is found, hero images may be skipped (noted in JSON).  
 - If OpenCV is missing, the cutout hero is skipped (noted in JSON).  
 - OCR‑dependent outputs are omitted when no lines are detected.
+
+## Suggested GitHub topics
+- `computer-vision`, `ocr`, `yolo`, `easyocr`, `openai`, `fastapi`, `pgvector`, `commerce`, `product-catalog`
