@@ -353,7 +353,7 @@ HTML_PAGE = """
     <div class="hero">
       <p class="eyebrow">Supplier-ready plan</p>
       <h1>Procurement Automation</h1>
-      <p class="subhead">Upload JSON/CSV files or run with the bundled multi-supplier sample set to generate a deterministic procurement plan with supplier-level POs, branch allocations, and ready-to-send PDFs.</p>
+      <p class="subhead">Upload JSON/CSV files or run with the bundled multi-supplier dataset to generate a deterministic procurement plan with supplier-level POs, branch allocations, and ready-to-send PDFs.</p>
     </div>
 
     <div class="two-col">
@@ -377,7 +377,7 @@ HTML_PAGE = """
               <strong>Plan output</strong>
               <span class="hint">Latest JSON emitted by the planner. Auto-updates after Generate PO.</span>
             </div>
-            <div class="note" id="note">Using bundled sample data by default. Uploads are optional.</div>
+            <div class="note" id="note">Using bundled data by default. Uploads are optional.</div>
           </div>
           <div id="result" class="result" style="max-height: 220px;">Generating plan...</div>
           <div class="footer">Output is also written to output/procurement_plan.json for convenience.</div>
@@ -654,7 +654,7 @@ HTML_PAGE = """
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      pushStatus('Running sample plan…', 'pending');
+      pushStatus('Running default plan…', 'pending');
       runPlan();
     });
   </script>
@@ -676,7 +676,7 @@ async def run_plan(
     inventory: UploadFile | None = File(default=None),
     sales: UploadFile | None = File(default=None),
 ):
-    # Load user-provided or sample data
+    # Load user-provided or bundled data
     sup = loader.load_suppliers(_read_bytes(suppliers)) or data.sample_suppliers()
     sku_list = loader.load_skus(_read_bytes(skus)) or data.sample_skus()
     locs = loader.load_locations(_read_bytes(locations)) or data.sample_locations()

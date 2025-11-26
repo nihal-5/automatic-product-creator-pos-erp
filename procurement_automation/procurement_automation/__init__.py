@@ -1,1 +1,1 @@
-# Package init for procurement automation sample.
+# Package init for procurement automation.

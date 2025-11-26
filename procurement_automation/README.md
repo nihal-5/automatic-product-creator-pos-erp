@@ -1,6 +1,6 @@
 # Resource Procurement Automation
 
-A compact, deterministic engine that turns sales and inventory signals into supplier-ready purchase orders. It ships with sample data, accepts JSON/CSV uploads, and emits a single plan that downstream systems can consume without extra wiring.
+A compact, deterministic engine that turns sales and inventory signals into supplier-ready purchase orders. It ships with a bundled baseline dataset, accepts JSON/CSV uploads, and emits a single plan that downstream systems can consume without extra wiring.
 
 ## What you get
 - End-to-end loop: suppliers, SKUs, locations, inventory, sales → purchase orders and allocations.
@@ -22,10 +22,10 @@ python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 uvicorn procurement_automation.app:app --reload --port 8010
 ```
-Open http://localhost:8010 — it auto-generates a plan from bundled multi-supplier sample data on load. Upload JSON/CSV files anytime to override.
+Open http://localhost:8010 — it auto-generates a plan from the bundled multi-supplier dataset on load. Upload JSON/CSV files anytime to override.
 
 ### Supplier view + PDFs
-- The dashboard lists suppliers from the latest plan (sample or your uploads) and shows planning status.
+- The dashboard lists suppliers from the latest plan (bundled or your uploads) and shows planning status.
 - Select a supplier to see linked SKUs, branch/DC stock, capacity/safety stock signals, planned allocations, and draft PO lines.
 - Download a ready-to-send PO PDF per supplier; the PDF now includes a branch/DC allocation summary.
 
@@ -50,7 +50,7 @@ curl -X POST http://localhost:8010/api/run \
 - Inventory (JSON or CSV): `sku`, `location_id`, `on_hand`, `inbound`.
 - Sales (JSON or CSV): `sku`, `location_id`, `qty`, `days` (qty sold over this many days).
 
-Upload JSON arrays or CSVs that match these fields. See `procurement_automation/data.py` for the included sample payloads.
+Upload JSON arrays or CSVs that match these fields. See `procurement_automation/data.py` for the included baseline payloads.
 
 ## Output shape (excerpt)
 ```json
@@ -82,8 +82,8 @@ Upload JSON arrays or CSVs that match these fields. See `procurement_automation/
 - `procurement_automation/app.py` — FastAPI app + HTML UI.
 - `procurement_automation/run.py` — CLI entry point.
 - `procurement_automation/planner.py` — planning logic and heuristics.
-- `procurement_automation/data.py` — sample data and tweakable assumptions.
+- `procurement_automation/data.py` — baseline data and tweakable assumptions.
 - `procurement_automation/loader.py` — JSON/CSV ingestion.
-- `procurement_automation/samples/` — ready-to-upload JSON/CSV files that mirror the sample data.
+- `procurement_automation/samples/` — ready-to-upload JSON/CSV files that mirror the bundled data.
 
 Tune safety stock, cover buffer, pricing, or MOQ rules in `procurement_automation/data.py` and `procurement_automation/planner.py`.
