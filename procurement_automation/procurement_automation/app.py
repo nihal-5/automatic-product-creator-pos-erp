@@ -285,6 +285,7 @@ HTML_PAGE = """
     @media (max-width: 1280px) { .two-col { grid-template-columns: 1fr; } }
     .wide-panel { margin-top: 16px; }
     .plan-actions { display:flex; gap:10px; align-items:center; justify-content: space-between; flex-wrap:wrap; }
+    .stack { display: flex; flex-direction: column; gap: 12px; }
     .status-list { list-style: none; padding: 0; margin: 10px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
     .status-item {
       padding: 8px 12px;
@@ -356,20 +357,34 @@ HTML_PAGE = """
     </div>
 
     <div class="two-col">
-      <div class="panel">
-        <div class="actions">
-          <strong>Supplier view</strong>
-          <select id="supplier-select" style="padding:8px 10px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:#e2e8f0;">
-            <option value="">Loading suppliers...</option>
-          </select>
-          <button id="regen-btn" type="button" onclick="regeneratePO()">Generate PO</button>
-          <button id="pdf-btn" type="button" onclick="downloadPdf()">Download PO PDF</button>
-          <span class="hint">Auto-refreshes from the latest data/plan and shows branch stock per SKU.</span>
+      <div class="stack">
+        <div class="panel">
+          <div class="actions">
+            <strong>Supplier view</strong>
+            <select id="supplier-select" style="padding:8px 10px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:#e2e8f0;">
+              <option value="">Loading suppliers...</option>
+            </select>
+            <button id="regen-btn" type="button" onclick="regeneratePO()">Generate PO</button>
+            <button id="pdf-btn" type="button" onclick="downloadPdf()">Download PO PDF</button>
+            <span class="hint">Auto-refreshes from the latest data/plan and shows branch stock per SKU.</span>
+          </div>
+          <div id="supplier-info" class="supplier-card">Select a supplier to view linked products, branch stock, and PO lines.</div>
         </div>
-        <div id="supplier-info" class="supplier-card">Select a supplier to view linked products, branch stock, and PO lines.</div>
+
+        <div class="panel" style="max-height: 320px; overflow:hidden;">
+          <div class="plan-actions">
+            <div>
+              <strong>Plan output</strong>
+              <span class="hint">Latest JSON emitted by the planner. Auto-updates after Generate PO.</span>
+            </div>
+            <div class="note" id="note">Using bundled sample data by default. Uploads are optional.</div>
+          </div>
+          <div id="result" class="result" style="max-height: 220px;">Generating plan...</div>
+          <div class="footer">Output is also written to output/procurement_plan.json for convenience.</div>
+        </div>
       </div>
 
-      <div>
+      <div class="stack">
         <form id="form" enctype="multipart/form-data" class="panel">
           <div class="actions">
             <span class="badge">Uploads optional — defaults provided</span>
@@ -405,22 +420,10 @@ HTML_PAGE = """
           </div>
         </form>
 
-        <div class="panel" style="margin-top:12px;">
+        <div class="panel">
           <div id="linked-skus" class="supplier-card">Select a supplier to view linked SKUs and stock.</div>
         </div>
       </div>
-    </div>
-
-    <div class="panel" style="margin-top:16px; max-width: 880px;">
-      <div class="plan-actions">
-        <div>
-          <strong>Plan output</strong>
-          <span class="hint">Latest JSON emitted by the planner. Auto-updates after Generate PO.</span>
-        </div>
-        <div class="note" id="note">Using bundled sample data by default. Uploads are optional.</div>
-      </div>
-      <div id="result" class="result" style="max-height: 280px;">Generating plan...</div>
-      <div class="footer">Output is also written to output/procurement_plan.json for convenience.</div>
     </div>
   </div>
 
