@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from collections import defaultdict
 from typing import Dict, List, Optional
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Request
 from fastapi.responses import HTMLResponse, JSONResponse, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fpdf import FPDF
@@ -336,6 +336,9 @@ HTML_PAGE = """
     .loc-chip { background: rgba(148,163,184,0.08); border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; color: #cbd5e1; font-size: 12px; }
     .pill { background: rgba(249, 115, 22, 0.18); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.4); padding: 4px 8px; border-radius: 10px; font-size: 12px; }
     .warn { color: #fbbf24; }
+    .po-line { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+    .po-line button { padding: 6px 10px; font-size: 13px; }
+    .po-line input { width: 90px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--border); background: #0a0f1e; color: #e2e8f0; }
     .note { color: #fbbf24; margin-top: 6px; font-size: 13px; }
     .footer { color: var(--muted); font-size: 12px; margin-top: 10px; }
   </style>
@@ -431,6 +434,8 @@ HTML_PAGE = """
       const po = summary.purchase_order;
       const skus = summary.skus || [];
       const allocations = summary.allocation_summary || [];
+      window.currentSupplier = supplier;
+      window.currentPoLines = po ? (po.lines || []) : [];
 
       const stats = [
         `<span class="pill">Lead time ${supplier.lead_time_days}d</span>`,
@@ -474,6 +479,27 @@ HTML_PAGE = """
         <div class="sku-locs">${allocHtml}</div>
         <div style="margin:6px 0;"><strong>Draft PO lines</strong></div>
         <div class="sku-locs">${poLines}</div>
+        <div style="margin:10px 0 6px;"><strong>Edit PO quantities</strong></div>
+        <div id="po-editor">
+          ${
+            po && po.lines.length
+              ? po.lines
+                  .map(
+                    (l) => `
+                    <div class="sku-card">
+                      <div><strong>${l.sku}</strong> <span class="tag">unit ${l.unit_cost}</span></div>
+                      <div class="po-line">
+                        <button type="button" class="po-btn" data-action="minus" data-sku="${l.sku}">-</button>
+                        <input class="po-line-input" data-sku="${l.sku}" type="number" min="0" value="${l.qty}">
+                        <button type="button" class="po-btn" data-action="plus" data-sku="${l.sku}">+</button>
+                      </div>
+                    </div>
+                  `
+                  )
+                  .join('')
+              : '<span class="hint">No PO lines to edit.</span>'
+          }
+        </div>
         <div style="margin-top:10px;"><strong>Linked SKUs & branch stock</strong></div>
         ${skuCards}
       `;
@@ -555,12 +581,50 @@ HTML_PAGE = """
     function downloadPdf() {
       const sel = document.getElementById('supplier-select');
       if (!sel.value) return;
-      window.open(`/api/supplier/${encodeURIComponent(sel.value)}/po.pdf`, '_blank');
+      const lines = getEditedLines();
+      fetch(`/api/supplier/${encodeURIComponent(sel.value)}/po.pdf`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lines }),
+      })
+        .then(res => res.blob())
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          window.open(url, '_blank');
+        });
+    }
+
+    function getEditedLines() {
+      const inputs = Array.from(document.querySelectorAll('.po-line-input'));
+      return inputs.map(input => {
+        const sku = input.dataset.sku;
+        const qty = parseInt(input.value || '0', 10);
+        const base = (window.currentPoLines || []).find(l => l.sku === sku);
+        return {
+          sku,
+          qty: isNaN(qty) ? 0 : qty,
+          unit_cost: base ? base.unit_cost : 0,
+        };
+      });
     }
 
     document.addEventListener('change', (ev) => {
       if (ev.target && ev.target.id === 'supplier-select') {
         loadSupplierSummary(ev.target.value);
+      }
+      if (ev.target && ev.target.classList.contains('po-line-input')) {
+        // values are read on download
+      }
+    });
+
+    document.addEventListener('click', (ev) => {
+      if (ev.target && ev.target.classList.contains('po-btn')) {
+        const sku = ev.target.dataset.sku;
+        const input = document.querySelector(`.po-line-input[data-sku="${sku}"]`);
+        if (!input) return;
+        const current = parseInt(input.value || '0', 10) || 0;
+        if (ev.target.dataset.action === 'plus') input.value = current + 1;
+        if (ev.target.dataset.action === 'minus') input.value = Math.max(0, current - 1);
       }
     });
 
@@ -670,4 +734,44 @@ async def supplier_po_pdf(supplier_id: str):
         content=pdf_bytes,
         media_type="application/pdf",
         headers={"Content-Disposition": f'attachment; filename="po_{supplier_id}.pdf"'},
+    )
+
+
+@app.post("/api/supplier/{supplier_id}/po.pdf")
+async def supplier_po_pdf_custom(supplier_id: str, request: Request):
+    summary = _supplier_summary(supplier_id)
+    supplier = summary["supplier"]
+    base_po: PurchaseOrder | None = summary["purchase_order"]
+    if not supplier or not base_po:
+        return JSONResponse({"error": "No purchase order for this supplier"}, status_code=404)
+    body = await request.json()
+    lines_payload = body.get("lines", [])
+    lines: List[PlanLine] = []
+    for item in lines_payload:
+        try:
+            lines.append(
+                PlanLine(
+                    sku=item["sku"],
+                    qty=int(item.get("qty", 0)),
+                    unit_cost=float(item.get("unit_cost", 0)),
+                )
+            )
+        except Exception:
+            continue
+    custom_po = PurchaseOrder(
+        supplier_id=base_po.supplier_id,
+        status=base_po.status,
+        eta_days=base_po.eta_days,
+        lines=lines if lines else base_po.lines,
+        allocations=base_po.allocations,
+    )
+    pdf_bytes = _po_pdf_bytes(
+        supplier=supplier,
+        po=custom_po,
+        skus=[s for s in current_data["skus"] if s.supplier_id == supplier_id],
+    )
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="po_${supplier_id}_custom.pdf"'},
     )
