@@ -262,7 +262,7 @@ HTML_PAGE = """
       background: radial-gradient(circle at 10% 20%, #132040 0, #0b1329 25%, #0f172a 60%);
       color: #e5e7eb;
     }
-    .container { max-width: 1120px; margin: 48px auto; padding: 0 20px 32px; }
+    .container { max-width: 1320px; margin: 32px auto 48px; padding: 0 20px 32px; }
     .hero {
       background: linear-gradient(120deg, rgba(249, 115, 22, 0.12), rgba(59, 130, 246, 0.12));
       border: 1px solid var(--border);
@@ -273,7 +273,7 @@ HTML_PAGE = """
     .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; color: var(--muted); margin: 0 0 6px; }
     h1 { margin: 0 0 8px; font-size: 28px; }
     .subhead { margin: 0; color: #cbd5e1; font-size: 15px; line-height: 1.6; }
-    form { margin-top: 22px; }
+    form { margin: 0; }
     .panel {
       background: var(--panel);
       border: 1px solid var(--border);
@@ -281,6 +281,8 @@ HTML_PAGE = """
       padding: 18px;
       box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
     }
+    .two-col { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; align-items: start; margin-top: 16px; }
+    @media (max-width: 1100px) { .two-col { grid-template-columns: 1fr; } }
     .status-list { list-style: none; padding: 0; margin: 10px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
     .status-item {
       padding: 8px 12px;
@@ -351,52 +353,54 @@ HTML_PAGE = """
       <p class="subhead">Upload JSON/CSV files or run with the bundled multi-supplier sample set to generate a deterministic procurement plan with supplier-level POs, branch allocations, and ready-to-send PDFs.</p>
     </div>
 
-    <form id="form" enctype="multipart/form-data" class="panel">
-      <div class="actions">
-        <span class="badge">Uploads optional — defaults provided</span>
-        <button id="run-btn" type="button" onclick="regeneratePO()">Generate PO</button>
-        <span class="hint">We never send data outside this service.</span>
-      </div>
-      <div class="grid">
-        <div class="card">
-          <strong>Suppliers</strong>
-          <span class="hint">JSON: supplier_id, lead_time_days, min_order_qty, price_band</span>
-          <input type="file" name="suppliers">
+    <div class="two-col">
+      <form id="form" enctype="multipart/form-data" class="panel">
+        <div class="actions">
+          <span class="badge">Uploads optional — defaults provided</span>
+          <button id="run-btn" type="button" onclick="regeneratePO()">Generate PO</button>
+          <span class="hint">We never send data outside this service.</span>
         </div>
-        <div class="card">
-          <strong>SKUs</strong>
-          <span class="hint">JSON: sku, supplier_id, case_size</span>
-          <input type="file" name="skus">
+        <div class="grid">
+          <div class="card">
+            <strong>Suppliers</strong>
+            <span class="hint">JSON: supplier_id, lead_time_days, min_order_qty, price_band</span>
+            <input type="file" name="suppliers">
+          </div>
+          <div class="card">
+            <strong>SKUs</strong>
+            <span class="hint">JSON: sku, supplier_id, case_size</span>
+            <input type="file" name="skus">
+          </div>
+          <div class="card">
+            <strong>Locations</strong>
+            <span class="hint">JSON: location_id, kind, capacity, safety_stock</span>
+            <input type="file" name="locations">
+          </div>
+          <div class="card">
+            <strong>Inventory</strong>
+            <span class="hint">JSON or CSV: sku, location_id, on_hand, inbound</span>
+            <input type="file" name="inventory">
+          </div>
+          <div class="card">
+            <strong>Sales</strong>
+            <span class="hint">JSON or CSV: sku, location_id, qty, days</span>
+            <input type="file" name="sales">
+          </div>
         </div>
-        <div class="card">
-          <strong>Locations</strong>
-          <span class="hint">JSON: location_id, kind, capacity, safety_stock</span>
-          <input type="file" name="locations">
-        </div>
-        <div class="card">
-          <strong>Inventory</strong>
-          <span class="hint">JSON or CSV: sku, location_id, on_hand, inbound</span>
-          <input type="file" name="inventory">
-        </div>
-        <div class="card">
-          <strong>Sales</strong>
-          <span class="hint">JSON or CSV: sku, location_id, qty, days</span>
-          <input type="file" name="sales">
-        </div>
-      </div>
-    </form>
+      </form>
 
-    <div class="panel" style="margin-top:14px;">
-      <div class="actions">
-        <strong>Supplier view</strong>
-        <select id="supplier-select" style="padding:8px 10px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:#e2e8f0;">
-          <option value="">Loading suppliers...</option>
-        </select>
-        <button id="regen-btn" type="button" onclick="regeneratePO()">Generate PO</button>
-        <button id="pdf-btn" type="button" onclick="downloadPdf()">Download PO PDF</button>
-        <span class="hint">Auto-refreshes from the latest data/plan and shows branch stock per SKU.</span>
+      <div class="panel">
+        <div class="actions">
+          <strong>Supplier view</strong>
+          <select id="supplier-select" style="padding:8px 10px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:#e2e8f0;">
+            <option value="">Loading suppliers...</option>
+          </select>
+          <button id="regen-btn" type="button" onclick="regeneratePO()">Generate PO</button>
+          <button id="pdf-btn" type="button" onclick="downloadPdf()">Download PO PDF</button>
+          <span class="hint">Auto-refreshes from the latest data/plan and shows branch stock per SKU.</span>
+        </div>
+        <div id="supplier-info" class="supplier-card">Select a supplier to view linked products, branch stock, and PO lines.</div>
       </div>
-      <div id="supplier-info" class="supplier-card">Select a supplier to view linked products, branch stock, and PO lines.</div>
     </div>
 
     <div class="note" id="note">Using bundled sample data by default. Uploads are optional.</div>
