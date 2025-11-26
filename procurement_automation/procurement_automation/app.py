@@ -281,7 +281,7 @@ HTML_PAGE = """
       padding: 18px;
       box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
     }
-    .two-col { display: grid; grid-template-columns: 1.05fr 1.1fr; gap: 16px; align-items: start; margin-top: 18px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; margin-top: 18px; }
     @media (max-width: 1280px) { .two-col { grid-template-columns: 1fr; } }
     .wide-panel { margin-top: 16px; }
     .plan-actions { display:flex; gap:10px; align-items:center; justify-content: space-between; flex-wrap:wrap; }
@@ -406,10 +406,6 @@ HTML_PAGE = """
         </form>
 
         <div class="panel" style="margin-top:12px;">
-          <div class="actions">
-            <strong>Linked SKUs & branch stock</strong>
-            <span class="hint">Per-location on hand, inbound, planned.</span>
-          </div>
           <div id="linked-skus" class="supplier-card">Select a supplier to view linked SKUs and stock.</div>
         </div>
       </div>
@@ -497,8 +493,6 @@ HTML_PAGE = """
               : '<span class="hint">No PO lines to edit.</span>'
           }
         </div>
-        <div style="margin-top:10px;"><strong>Linked SKUs & branch stock</strong></div>
-        <div id="sku-slot"></div>
       `;
 
       const linked = document.getElementById('linked-skus');
