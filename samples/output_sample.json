@@ -1,0 +1,93 @@
+{
+  "id": "sample_product",
+  "created_at": "2024-08-01T12:00:00Z",
+  "summary": {
+    "product_name": "Example Granola",
+    "brand": "Good Foods",
+    "variant_or_flavor": "Honey Almond",
+    "net_weight": "500 g",
+    "serving_size": "50 g",
+    "expiry": "2025-06-15"
+  },
+  "inventory": {
+    "stock": 12,
+    "supplier_links": []
+  },
+  "barcode": {
+    "items": [
+      {
+        "type": "EAN-13",
+        "data": "0123456789012"
+      }
+    ]
+  },
+  "dates": {
+    "best_by": "2025-06-15",
+    "expiration": "2025-06-15",
+    "manufactured_on": "2024-06-15",
+    "lot": "A1B2C3",
+    "raw_candidates": [
+      "MFD 15/06/2024",
+      "EXP 15/06/2025",
+      "LOT A1B2C3"
+    ]
+  },
+  "mrp": {
+    "amount": "299",
+    "currency": "₹",
+    "raw": "MRP ₹299.00 (incl. of all taxes)"
+  },
+  "views": {
+    "front": {
+      "json": "output/sample_front.json",
+      "hero": "output/sample_front_hero.jpeg",
+      "ocr": "output/sample_front_ocr.jpeg",
+      "masked": "output/sample_front_masked.jpeg",
+      "anchor": "output/sample_front_anchor.jpeg"
+    },
+    "back": {
+      "json": "output/sample_back.json",
+      "hero": "output/sample_back_hero.jpeg",
+      "ocr": "output/sample_back_ocr.jpeg",
+      "masked": "output/sample_back_masked.jpeg",
+      "anchor": "output/sample_back_anchor.jpeg"
+    }
+  },
+  "ingredients": [
+    "Whole grain oats",
+    "Almonds",
+    "Honey",
+    "Brown sugar",
+    "Sea salt"
+  ],
+  "claims": [
+    "High fiber",
+    "No artificial preservatives"
+  ],
+  "certifications": [
+    "Non-GMO"
+  ],
+  "allergen_info": "Contains almonds.",
+  "facility_warning": "Processed in a facility that also handles peanuts.",
+  "nutrition_facts": {
+    "calories": 210,
+    "nutrients": [
+      { "name": "Total Fat", "amount": "7 g", "dv_percent": 9 },
+      { "name": "Sodium", "amount": "120 mg", "dv_percent": 5 },
+      { "name": "Total Carbohydrate", "amount": "32 g", "dv_percent": 12 },
+      { "name": "Protein", "amount": "6 g", "dv_percent": null }
+    ]
+  },
+  "other_text": [
+    "Store in a cool, dry place.",
+    "Best enjoyed with milk or yogurt."
+  ],
+  "net_quantity": { "value": "500", "unit": "g" },
+  "serving": { "serving_size": "50 g", "servings_per_container": "10" },
+  "variant_or_flavor": "Honey Almond",
+  "distributor": "Good Foods Pvt Ltd",
+  "address": "123 Healthy St, Bengaluru, IN",
+  "website": "https://example.com",
+  "storage_instructions": "Keep sealed after opening.",
+  "item_number": "GF-12345"
+}

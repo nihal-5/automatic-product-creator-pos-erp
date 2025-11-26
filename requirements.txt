@@ -7,3 +7,15 @@ opencv-python>=4.8.0
 pyzbar>=0.1.9
 Pillow>=10.0.0
 numpy>=1.24.0
+zxing-cpp
+openai>=1.40.0
+pdfminer.six>=20221105
+fastapi>=0.112.0
+uvicorn[standard]>=0.30.0
+SQLAlchemy>=2.0.0
+alembic>=1.13.0
+psycopg2-binary>=2.9.9
+pydantic-settings>=2.2.1
+asyncpg>=0.29.0
+pgvector>=0.2.4
+requests>=2.32.0

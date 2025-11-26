@@ -1,0 +1,24 @@
+{
+  "name": "product-",
+  "version": "1.0.0",
+  "description": "**OCR + Detection + Masking + Hero Cutout** in one Python script.   This pipeline detects product regions with YOLO‑World, reads text with EasyOCR, generates helpful overlays, masks non‑text areas for focus, and produces an e‑commerce–ready hero image on a pure white background.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nihal-5/ecom-ocr-hero.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nihal-5/ecom-ocr-hero/issues"
+  },
+  "homepage": "https://github.com/nihal-5/ecom-ocr-hero#readme",
+  "dependencies": {
+    "jsdom": "^27.0.1"
+  }
+}

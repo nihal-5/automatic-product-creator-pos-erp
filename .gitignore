@@ -1,21 +1,28 @@
-# Byte-compiled / cache
+# OS junk
+.DS_Store
+
+# Editors / IDE
+.vscode/
+.idea/
+
+# Python
 __pycache__/
 *.py[cod]
 *.pyo
-
-# Virtual environments
+*.so
 .venv/
-env/
-venv/
+.env
+.env.*
 
-# OS
-.DS_Store
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Project outputs
+# Project artifacts
 output/
-*.pt
-*.onnx
+input/
 
-# IDE
-.vscode/
-.idea/
+# Misc
+*.log
