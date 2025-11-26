@@ -411,7 +411,7 @@ HTML_PAGE = """
       </div>
     </div>
 
-    <div class="panel wide-panel">
+    <div class="panel" style="margin-top:16px; max-width: 880px;">
       <div class="plan-actions">
         <div>
           <strong>Plan output</strong>
@@ -419,7 +419,7 @@ HTML_PAGE = """
         </div>
         <div class="note" id="note">Using bundled sample data by default. Uploads are optional.</div>
       </div>
-      <div id="result" class="result">Generating plan...</div>
+      <div id="result" class="result" style="max-height: 280px;">Generating plan...</div>
       <div class="footer">Output is also written to output/procurement_plan.json for convenience.</div>
     </div>
   </div>
