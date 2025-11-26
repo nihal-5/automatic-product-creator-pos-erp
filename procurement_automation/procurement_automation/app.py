@@ -169,9 +169,9 @@ HTML_PAGE = """
       </div>
     </form>
 
-    <div class="note" id="note">Awaiting input…</div>
+    <div class="note" id="note">Using bundled sample data by default. Uploads are optional.</div>
     <h3>Plan output</h3>
-    <div id="result" class="result">Submit files or run with defaults to view the plan.</div>
+    <div id="result" class="result">Generating plan...</div>
     <div class="footer">Output is also written to output/procurement_plan.json for convenience.</div>
   </div>
 
@@ -201,6 +201,10 @@ HTML_PAGE = """
         btn.disabled = false;
       }
     }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      runPlan();
+    });
   </script>
 </body>
 </html>

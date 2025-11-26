@@ -22,7 +22,7 @@ python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 uvicorn procurement_automation.app:app --reload --port 8010
 ```
-Open http://localhost:8010 to upload optional JSON/CSV files or just run with the bundled sample data.
+Open http://localhost:8010 — it will auto-generate a plan from bundled sample data on load. Upload JSON/CSV files anytime to override.
 
 ### API endpoints
 - `GET /` — minimal UI for uploads and running the plan.
