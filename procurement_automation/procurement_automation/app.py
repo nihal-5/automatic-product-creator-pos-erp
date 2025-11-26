@@ -402,7 +402,7 @@ HTML_PAGE = """
         <select id="supplier-select" style="padding:8px 10px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:#e2e8f0;">
           <option value="">Loading suppliers...</option>
         </select>
-        <button id="regen-btn" type="button" onclick="runPlan()">Generate PO</button>
+        <button id="regen-btn" type="button" onclick="regeneratePO()">Generate PO</button>
         <button id="pdf-btn" type="button" onclick="downloadPdf()">Download PO PDF</button>
         <span class="hint">Auto-refreshes from the latest data/plan and shows branch stock per SKU.</span>
       </div>
@@ -505,7 +505,7 @@ HTML_PAGE = """
       `;
     }
 
-    async function loadSuppliers() {
+    async function loadSuppliers(preferId = null) {
       const sel = document.getElementById('supplier-select');
       sel.innerHTML = '<option value=\"\">Loading suppliers...</option>';
       try {
@@ -520,7 +520,8 @@ HTML_PAGE = """
           sel.appendChild(opt);
         });
         if (json.suppliers.length > 0) {
-          sel.value = json.suppliers[0].supplier_id;
+          const match = preferId && json.suppliers.find(s => s.supplier_id === preferId);
+          sel.value = match ? preferId : json.suppliers[0].supplier_id;
           loadSupplierSummary(sel.value);
           pushStatus(`Loaded ${json.suppliers.length} suppliers`, 'ok');
         }
@@ -548,7 +549,7 @@ HTML_PAGE = """
       }
     }
 
-    async function runPlan() {
+    async function runPlan(preferId = null) {
       const form = document.getElementById('form');
       const data = new FormData(form);
       const note = document.getElementById('note');
@@ -567,7 +568,7 @@ HTML_PAGE = """
         } else {
           note.textContent = 'Plan generated successfully.';
         }
-        loadSuppliers();
+        loadSuppliers(preferId);
         pushStatus(`Plan ready with ${json.purchase_orders.length} supplier POs`, 'ok');
       } catch (e) {
         note.textContent = 'Failed: ' + e.message;
@@ -775,3 +776,8 @@ async def supplier_po_pdf_custom(supplier_id: str, request: Request):
         media_type="application/pdf",
         headers={"Content-Disposition": f'attachment; filename="po_${supplier_id}_custom.pdf"'},
     )
+    function regeneratePO() {
+      const sel = document.getElementById('supplier-select');
+      const current = sel ? sel.value : null;
+      runPlan(current);
+    }
