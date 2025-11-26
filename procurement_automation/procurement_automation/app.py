@@ -48,48 +48,132 @@ HTML_PAGE = """
 <head>
   <meta charset="utf-8">
   <title>Procurement Automation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; max-width: 1100px; margin: 32px auto; color: #1f2937; }
-    h1 { margin-bottom: 6px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 12px 0; }
-    .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; background: #fff; }
-    button { background: #2563eb; color: #fff; border: none; padding: 10px 16px; border-radius: 8px; cursor: pointer; }
-    button:hover { background: #1d4ed8; }
-    .result { white-space: pre; font-family: ui-monospace, SFMono-Regular, Consolas, Menlo, monospace; background: #f9fafb; padding: 12px; border-radius: 10px; overflow: auto; max-height: 420px; }
-    .note { color: #dc2626; margin-top: 8px; }
+    :root {
+      --bg: #0f172a;
+      --card: #0b1224;
+      --panel: #0f172a;
+      --border: #1f2937;
+      --accent: #f97316;
+      --muted: #94a3b8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Manrope', 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at 10% 20%, #132040 0, #0b1329 25%, #0f172a 60%);
+      color: #e5e7eb;
+    }
+    .container { max-width: 1120px; margin: 48px auto; padding: 0 20px 32px; }
+    .hero {
+      background: linear-gradient(120deg, rgba(249, 115, 22, 0.12), rgba(59, 130, 246, 0.12));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+    }
+    .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; color: var(--muted); margin: 0 0 6px; }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    .subhead { margin: 0; color: #cbd5e1; font-size: 15px; line-height: 1.6; }
+    form { margin-top: 22px; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 12px 0 4px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      min-height: 110px;
+    }
+    .card strong { display: block; margin-bottom: 8px; color: #e2e8f0; }
+    .hint { color: var(--muted); font-size: 12px; margin-top: 2px; }
+    input[type="file"] { color: #cbd5e1; font-size: 13px; width: 100%; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 10px; }
+    button {
+      background: linear-gradient(120deg, #f97316, #fbbf24);
+      color: #0f172a;
+      border: none;
+      padding: 11px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 28px rgba(249, 115, 22, 0.35);
+    }
+    button:hover { transform: translateY(-1px); }
+    button:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+    .badge { background: rgba(249, 115, 22, 0.16); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.4); padding: 5px 10px; border-radius: 999px; font-size: 12px; }
+    h3 { margin: 18px 0 8px; }
+    .result {
+      white-space: pre;
+      font-family: ui-monospace, SFMono-Regular, Consolas, Menlo, monospace;
+      background: #0a0f1e;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: auto;
+      max-height: 460px;
+    }
+    .note { color: #fbbf24; margin-top: 6px; font-size: 13px; }
+    .footer { color: var(--muted); font-size: 12px; margin-top: 10px; }
   </style>
 </head>
 <body>
-  <h1>Procurement Automation</h1>
-  <p>Upload data (JSON/CSV) to generate a purchase plan. Leave empty to use sample data.</p>
-  <form id="form" enctype="multipart/form-data">
-    <div class="grid">
-      <div class="card">
-        <strong>Suppliers (JSON)</strong><br>
-        <input type="file" name="suppliers">
-      </div>
-      <div class="card">
-        <strong>SKUs (JSON)</strong><br>
-        <input type="file" name="skus">
-      </div>
-      <div class="card">
-        <strong>Locations (JSON)</strong><br>
-        <input type="file" name="locations">
-      </div>
-      <div class="card">
-        <strong>Inventory (JSON or CSV)</strong><br>
-        <input type="file" name="inventory">
-      </div>
-      <div class="card">
-        <strong>Sales (JSON or CSV)</strong><br>
-        <input type="file" name="sales">
-      </div>
+  <div class="container">
+    <div class="hero">
+      <p class="eyebrow">Supplier-ready plan</p>
+      <h1>Procurement Automation</h1>
+      <p class="subhead">Upload JSON/CSV files or run with the bundled sample set to generate a deterministic procurement plan with supplier-level POs and allocations.</p>
     </div>
-    <button type="button" onclick="runPlan()">Generate Plan</button>
-  </form>
-  <div class="note" id="note"></div>
-  <h3>Plan</h3>
-  <div id="result" class="result">Awaiting input…</div>
+
+    <form id="form" enctype="multipart/form-data" class="panel">
+      <div class="actions">
+        <span class="badge">Uploads optional — defaults provided</span>
+        <button id="run-btn" type="button" onclick="runPlan()">Generate plan</button>
+        <span class="hint">We never send data outside this service.</span>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <strong>Suppliers</strong>
+          <span class="hint">JSON: supplier_id, lead_time_days, min_order_qty, price_band</span>
+          <input type="file" name="suppliers">
+        </div>
+        <div class="card">
+          <strong>SKUs</strong>
+          <span class="hint">JSON: sku, supplier_id, case_size</span>
+          <input type="file" name="skus">
+        </div>
+        <div class="card">
+          <strong>Locations</strong>
+          <span class="hint">JSON: location_id, kind, capacity, safety_stock</span>
+          <input type="file" name="locations">
+        </div>
+        <div class="card">
+          <strong>Inventory</strong>
+          <span class="hint">JSON or CSV: sku, location_id, on_hand, inbound</span>
+          <input type="file" name="inventory">
+        </div>
+        <div class="card">
+          <strong>Sales</strong>
+          <span class="hint">JSON or CSV: sku, location_id, qty, days</span>
+          <input type="file" name="sales">
+        </div>
+      </div>
+    </form>
+
+    <div class="note" id="note">Awaiting input…</div>
+    <h3>Plan output</h3>
+    <div id="result" class="result">Submit files or run with defaults to view the plan.</div>
+    <div class="footer">Output is also written to output/procurement_plan.json for convenience.</div>
+  </div>
 
   <script>
     async function runPlan() {
@@ -97,16 +181,24 @@ HTML_PAGE = """
       const data = new FormData(form);
       const note = document.getElementById('note');
       const result = document.getElementById('result');
-      note.textContent = '';
-      result.textContent = 'Processing...';
+      const btn = document.getElementById('run-btn');
+      note.textContent = 'Processing...';
+      btn.disabled = true;
       try {
         const res = await fetch('/api/run', { method: 'POST', body: data });
         if (!res.ok) throw new Error('Request failed');
         const json = await res.json();
         result.textContent = JSON.stringify(json, null, 2);
+        if (Array.isArray(json.notes) && json.notes.length > 0) {
+          note.textContent = 'Notes: ' + json.notes.join(' | ');
+        } else {
+          note.textContent = 'Plan generated successfully.';
+        }
       } catch (e) {
         note.textContent = 'Failed: ' + e.message;
-        result.textContent = 'Awaiting input…';
+        result.textContent = 'Submit files or run with defaults to view the plan.';
+      } finally {
+        btn.disabled = false;
       }
     }
   </script>
