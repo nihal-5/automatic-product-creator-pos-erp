@@ -262,7 +262,7 @@ HTML_PAGE = """
       background: radial-gradient(circle at 10% 20%, #132040 0, #0b1329 25%, #0f172a 60%);
       color: #e5e7eb;
     }
-    .container { max-width: 1320px; margin: 32px auto 48px; padding: 0 20px 32px; }
+    .container { max-width: 1520px; margin: 32px auto 48px; padding: 0 28px 40px; }
     .hero {
       background: linear-gradient(120deg, rgba(249, 115, 22, 0.12), rgba(59, 130, 246, 0.12));
       border: 1px solid var(--border);
@@ -281,8 +281,10 @@ HTML_PAGE = """
       padding: 18px;
       box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
     }
-    .two-col { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; align-items: start; margin-top: 16px; }
-    @media (max-width: 1100px) { .two-col { grid-template-columns: 1fr; } }
+    .two-col { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; align-items: start; margin-top: 18px; }
+    @media (max-width: 1280px) { .two-col { grid-template-columns: 1fr; } }
+    .wide-panel { margin-top: 16px; }
+    .plan-actions { display:flex; gap:10px; align-items:center; justify-content: space-between; flex-wrap:wrap; }
     .status-list { list-style: none; padding: 0; margin: 10px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
     .status-item {
       padding: 8px 12px;
@@ -403,10 +405,17 @@ HTML_PAGE = """
       </div>
     </div>
 
-    <div class="note" id="note">Using bundled sample data by default. Uploads are optional.</div>
-    <h3>Plan output</h3>
-    <div id="result" class="result">Generating plan...</div>
-    <div class="footer">Output is also written to output/procurement_plan.json for convenience.</div>
+    <div class="panel wide-panel">
+      <div class="plan-actions">
+        <div>
+          <strong>Plan output</strong>
+          <span class="hint">Latest JSON emitted by the planner. Auto-updates after Generate PO.</span>
+        </div>
+        <div class="note" id="note">Using bundled sample data by default. Uploads are optional.</div>
+      </div>
+      <div id="result" class="result">Generating plan...</div>
+      <div class="footer">Output is also written to output/procurement_plan.json for convenience.</div>
+    </div>
   </div>
 
   <script>
