@@ -1,0 +1,5 @@
+# pos_worker only — the light path. No PyTorch.
+# The full ocr_pipeline.py stack is in requirements.txt.
+openai>=1.40.0
+Pillow>=10.0.0
+httpx>=0.27.0
