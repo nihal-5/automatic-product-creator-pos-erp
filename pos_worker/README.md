@@ -1,5 +1,9 @@
 # pos_worker — photograph a product, get a catalogue draft
 
+> **New here?** `docs/SYSTEM_OVERVIEW.md` in `Retail-intel/POS` (branch
+> `ai-platform`) explains how this worker, the POS, and the voice agent fit
+> together. This README covers the worker alone.
+
 Reads a product photograph and creates a **draft** entry in the POS
 (`Retail-intel/POS`) for a person to review.
 
